@@ -1,0 +1,86 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:HydroElectricSim.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HydroElectricSim.Views.MainView"
+             x:DataType="vm:MainViewModel">
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Horizontal">
+                    <Border BorderBrush="Blue" BorderThickness="2" CornerRadius="5" Margin="10">
+                        <Grid>
+                            <StackPanel Margin="10">
+                                <Label>Coolant Panel</Label>
+                                <CheckBox Name="coolantValve">Coolant valve</CheckBox>
+                                <CheckBox Name="loop1">Loop 1 valve</CheckBox>
+                                <CheckBox Name="loop2">Loop 2 valve</CheckBox>
+                                <Label>Filter select</Label>
+                                <RadioButton GroupName="FilterGroup" Name="filterA" IsChecked="True">Filter A</RadioButton>
+                                <RadioButton GroupName="FilterGroup" Name="filterB">Filter B</RadioButton>
+                                <RadioButton GroupName="FilterGroup" Name="filterOff">Bypass</RadioButton>
+                                <CheckBox IsChecked="True">Oil separator</CheckBox>
+                                <Button Name="CoolantTrip" Background="Red" Foreground="Yellow" HorizontalAlignment="Stretch">TRIP</Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Blue" BorderThickness="2" CornerRadius="5" Margin="10">
+                        <Grid>
+                            <StackPanel Margin="10">
+                                <Label>Hydraulic Panel</Label>
+                                <CheckBox Name="genPreheat">Generator preheat</CheckBox>
+                                <CheckBox Name="genCoolant">Gen coolant</CheckBox>
+                                <Label Name="genTemp">Stator Temperature: 30C</Label>
+                                <ProgressBar Value="30" Maximum="120"></ProgressBar>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Blue" BorderThickness="2" CornerRadius="5" Margin="10">
+                        <Grid>
+                            <StackPanel Margin="10">
+                                <Label>Hydraulic Panel</Label>
+                                <CheckBox Name="elecPump">Electric oil pump</CheckBox>
+                                <CheckBox Name="filterBypass">Filter bypass</CheckBox>
+                                <Label Name="oilTemp">Oil Temperature: 15C</Label>
+                                <ProgressBar Value="15" Maximum="100"></ProgressBar>
+                                <CheckBox Name="oilCoolPump">Oil coolant pump</CheckBox>
+                                <Label>Flowrate: 0.2L/s</Label>
+                                <Slider Minimum="0.2" Maximum="2" Value="0.2" Name="flowrate"></Slider>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Blue" BorderThickness="2" CornerRadius="5" Margin="10">
+                        <Grid>
+                            <StackPanel Margin="10">
+                                <Label>Turbine Panel</Label>
+                                <CheckBox Name="sync" IsEnabled="False">Sync to grid</CheckBox>
+                                <CheckBox Name="brake" IsChecked="True">Turbine brake</CheckBox>
+                                <Label>Wicket gates: 0%</Label>
+                                <Slider Minimum="0" Maximum="100" Value="0" Name="wicketGates"></Slider>
+                                <Button Name="TurbineTrip" Background="Red" Foreground="Yellow" HorizontalAlignment="Stretch">TRIP</Button>
+                                <Button Name="TurbineFill" HorizontalAlignment="Stretch">FILL TURBINE</Button>
+                                <Button Name="MIVopen" HorizontalAlignment="Stretch" IsEnabled="False">OPEN MIV</Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

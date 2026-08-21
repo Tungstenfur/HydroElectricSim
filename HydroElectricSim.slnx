@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="HydroElectricSim.Android/HydroElectricSim.Android.csproj">
+    <Deploy />
+  </Project>
+  <Project Path="HydroElectricSim.Browser/HydroElectricSim.Browser.csproj" />
+  <Project Path="HydroElectricSim.Desktop/HydroElectricSim.Desktop.csproj" />
+  <Project Path="HydroElectricSim/HydroElectricSim.csproj" />
+</Solution>
