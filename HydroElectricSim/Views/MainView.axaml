@@ -21,12 +21,15 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <ScrollViewer VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Auto">
                 <StackPanel Name="Infos"></StackPanel>
             </ScrollViewer>
+            <StackPanel Grid.Column="1">
+                <Label Name="prodLabel" FontSize="20">Power Output: 0 MW</Label>
+                <Label Name="demandLabel" FontSize="20">Demand: 0 MW</Label>
+            </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -79,13 +82,20 @@
                         <Grid>
                             <StackPanel Margin="10">
                                 <Label>Turbine Panel</Label>
-                                <CheckBox Name="sync" IsEnabled="False">Sync to grid</CheckBox>
+                                <CheckBox Name="sync" IsEnabled="False" IsCheckedChanged="Sync_OnIsCheckedChanged">Sync to grid</CheckBox>
+                                <Label Name="syncStatus">Cant sync: too slow!</Label>
                                 <CheckBox Name="brake" IsChecked="True">Turbine brake</CheckBox>
-                                <Label>Wicket gates: 0%</Label>
-                                <Slider Minimum="0" Maximum="100" Value="0" Name="wicketGates"></Slider>
-                                <Button Name="TurbineTrip" Background="Red" Foreground="Yellow" HorizontalAlignment="Stretch">TRIP</Button>
+                                <Label Name="RpmLabel">Turbine Speed: 0 rpm</Label>
+                                <ProgressBar Maximum="300" Name="RpmBar"></ProgressBar>
+                                <Label Name="wicketPositionLabel">Wicket gates: 0%</Label>
+                                <Slider Minimum="0" Maximum="100" Value="0" Name="wicketGates" ValueChanged="WicketGates_OnValueChanged"></Slider>
+                                <Button Name="wicketOpenFine" HorizontalAlignment="Stretch" Click="wicketOpenFine_Click">OPEN WICKET FINE</Button>
+                                <Button Name="wicketCloseFine" HorizontalAlignment="Stretch" Click="wicketCloseFine_Click">CLOSE WICKET FINE</Button>
+                                <Separator Height="1" Margin="0,10,0,10"></Separator>
                                 <Button Name="TurbineFill" HorizontalAlignment="Stretch" Click="TurbineFill_Click">FILL TURBINE</Button>
                                 <Button Name="MIVopen" HorizontalAlignment="Stretch" IsEnabled="False" Click="MIVopen_Click">OPEN MIV</Button>
+                                <Separator Height="1" Margin="0,10,0,10"></Separator>
+                                <Button Name="TurbineTrip" Background="Red" Foreground="Yellow" HorizontalAlignment="Stretch">TRIP</Button>
                             </StackPanel>
                         </Grid>
                     </Border>
