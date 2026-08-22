@@ -21,13 +21,16 @@ public partial class MainView : UserControl
     double Demand=0;
     double Production=0;
     double rpm=0;
+    double lubTemperature=20;
     double oilTempValue=15;
     bool TurbineFilling = false;
     bool Miv=false;
     bool ElecOilPump=false;
     bool MainOilPump=false;
     bool syncState = false;
-    
+    bool filterAClog=false;
+    bool filterBClog=false;
+    bool Lubrication=false;
     public MainView()
     {
         InitializeComponent();
@@ -53,31 +56,18 @@ public partial class MainView : UserControl
         GeneratorTick();
         TurbineTick();
         HydraulicTick();
+        LubricationTick();
         infoUpdate();
+        if(Random.Shared.NextDouble() < 0.001) filterAClog=true;
+        if(Random.Shared.NextDouble() < 0.001) filterBClog=true;
     }
 
-    private void HydraulicTick()
+    private bool isFilterClogged()
     {
-        oilTempValue+= Production / 180;
-        if (oilCoolPump.IsChecked == true && isCoolingActive())
-            oilTempValue -= Flowrate / 40;
-        oilTemp.Content = $"Oil Temperature: {oilTempValue:F0}C";
-        oilTempBar.Value = oilTempValue;
-    }
-    private void GeneratorTick()
-    {
-        if(genPreheat.IsChecked == true&& StatorTemp<120)
-        {
-            StatorTemp += 0.4*Random.Shared.NextDouble();
-            genTemp.Content = $"Stator Temperature: {StatorTemp:F1}C";
-            genTempBar.Value = StatorTemp;
-        }
-        else if(genCoolant.IsChecked == true && StatorTemp>15&&isCoolingActive())
-        {
-            StatorTemp -= 0.4*Random.Shared.NextDouble();
-            genTemp.Content = $"Stator Temperature: {StatorTemp:F1}C";
-            genTempBar.Value = StatorTemp;
-        }
+        if(filterA.IsChecked==true&&filterAClog) return true;
+        if(filterB.IsChecked==true&&filterBClog) return true;
+        if (filterOff.IsChecked == true) return true;
+        return false;
     }
     private void Flowrate_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
@@ -112,33 +102,6 @@ public partial class MainView : UserControl
         Miv=true;
     }
 
-    private void TurbineTick()
-    {
-        if (!syncState)
-        {
-            if (Miv && !brake.IsChecked == true)
-            {
-                rpm = Turbine.GetTurbineSpeed(rpm, WicketPosition);
-                RpmLabel.Content = $"Turbine Speed: {rpm:F1} rpm";
-                RpmBar.Value = rpm;
-            }
-            else if (brake.IsChecked == true)
-            {
-                rpm -= 0.5;
-                if (rpm < 0) rpm = 0;
-                RpmLabel.Content = $"Turbine Speed: {rpm:F1} rpm";
-                RpmBar.Value = rpm;
-            }
-
-            Turbine.UpdateSpeedHistory(rpm);
-            checkSyncStatus();
-        }
-        else
-        {
-            Production=Turbine.GetTurbineOutput(WicketPosition);
-            prodLabel.Content = $"Power Output: {Production:F2} MW";
-        }
-    }
     
 
 
@@ -221,5 +184,24 @@ public partial class MainView : UserControl
             rpm = 250;
             RpmLabel.Content = $"Turbine Speed: {rpm:F1} rpm";
         }
+    }
+    private void TripTurbine(string reason)
+    {
+        syncState=false;
+        sync.IsChecked=false;
+        brake.IsChecked=true;
+        WicketPosition=0;
+        wicketGates.Value=0;
+        wicketPositionLabel.Content = $"Wicket gates: {WicketPosition:F1}%";
+        rpm=0;
+        syncStatus.Content="Cant sync: too slow!";
+        var box = MessageBoxManager
+            .GetMessageBoxStandard("Trip!", $"Turbine tripped: {reason}", ButtonEnum.Ok);
+        box.ShowAsPopupAsync(this);
+    }
+
+    private void TurbineTrip_OnClick(object? sender, RoutedEventArgs e)
+    {
+        TripTurbine("Manual trip initiated.");
     }
 }
