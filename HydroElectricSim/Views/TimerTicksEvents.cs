@@ -92,8 +92,13 @@ public partial class MainView
             {
                 lubrication = true;
                 lubTemperature += 0.05;
+                PumpStatus.Content="Pump running";
             }
-            else lubrication = false;
+            else
+            {
+                lubrication = false;
+                PumpStatus.Content = "Pump not running!";
+            }
 
             if (lubTemperature > 48)
             {
@@ -108,6 +113,7 @@ public partial class MainView
         else
         {
             lubrication = false;
+            PumpStatus.Content = "Pump not running!";
         }
         if(Fan.IsChecked==true)
         {
