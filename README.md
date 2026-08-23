@@ -18,7 +18,7 @@ dotnet publish -o out -c Release
 ```
 Then run webserver from out/wwwroot
 ### Android
-[Showcase on a emulator](https://drive.google.com/file/d/1jMO4qftb9ohU_H4vre8bTBHxEcOE8TIB/view?usp=sharing)
+[Showcase on a emulator](https://drive.google.com/file/d/1jMO4qftb9ohU_H4vre8bTBHxEcOE8TIB/view?usp=sharing)  
 Make sure Java 21 and Android SDK with API level 36 is installed
 
 ```bash
