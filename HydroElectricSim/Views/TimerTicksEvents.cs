@@ -71,6 +71,7 @@ public partial class MainView
         }
         else
         {
+            if(Brake.IsChecked==true) TripTurbine("Brake engaged");
             if(GenTempBar.Value<50) TripTurbine("Generator Short circuit");
             if(GenTempBar.Value>90) TripTurbine("Generator Overheat");
             production=Turbine.GetTurbineOutput(wicketPosition,trashRackFill);

@@ -14,7 +14,7 @@ internal static class Turbine
     }
     internal static double GetTurbineOutput(double wicketPosition, double trashRackFill)
     {
-        return Math.Max((wicketPosition*0.2-(10*0.15)*GetTrashRackPenalty(trashRackFill)),0);
+        return Math.Max(wicketPosition*0.2-(10*0.15),0)*GetTrashRackPenalty(trashRackFill);
     }
     internal static void UpdateSpeedHistory(double speed)
     {
@@ -38,7 +38,7 @@ internal static class Turbine
         variance/=speedHistory.Count;
         return Math.Sqrt(variance);
     }
-    internal static double GetTrashRackPenalty(double trashRackFill)
+    private static double GetTrashRackPenalty(double trashRackFill)
     {
         return Math.Min((-0.015*trashRackFill)+2,1);
     }

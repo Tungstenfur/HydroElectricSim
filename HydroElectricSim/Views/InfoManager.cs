@@ -26,7 +26,7 @@ public partial class MainView
     private void infoUpdate()
     {
         List<Label> infoList = new();
-        if(Math.Abs(demand-production)<0.5) infoList.Add(getInfoLabel("Demand meet!", infoType.Info));
+        if(Math.Abs(demand-production)<0.05) infoList.Add(getInfoLabel("Demand meet!", infoType.Info));
         if (statorTemp < 60) infoList.Add(getInfoLabel("Low Stator Temperature", infoType.Warn));
         if (statorTemp > 90) infoList.Add(getInfoLabel("High Stator Temperature", infoType.Error));
         if (turbineFilling) infoList.Add(getInfoLabel("Turbine Filling", infoType.Info));
@@ -42,6 +42,7 @@ public partial class MainView
         if(!lubrication) infoList.Add(getInfoLabel("No lubrication!", infoType.Error));
         if(lubTemperature<40) infoList.Add(getInfoLabel("Low lubrication temperature", infoType.Warn));
         if(lubTemperature>45) infoList.Add(getInfoLabel("High lubrication temperature", infoType.Warn));
+        if(trashRackFill>50) infoList.Add(getInfoLabel("Trash Rack Clogged", infoType.Warn));
 
         Infos.Children.Clear();
         foreach (Label label in infoList)
