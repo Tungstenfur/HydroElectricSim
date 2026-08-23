@@ -11,34 +11,34 @@ public partial class MainView
 {
     private void HydraulicTick()
     {
-        oilTempValue+= Production / 180;
-        if (oilCoolPump.IsChecked == true && isCoolingActive())
-            oilTempValue -= isFilterClogged()? Flowrate / 20: Flowrate/50;
-        oilTemp.Content = $"Oil Temperature: {oilTempValue:F0}C";
-        oilTempBar.Value = oilTempValue;
+        oilTempValue+= production / 180;
+        if (OilCoolPump.IsChecked == true && isCoolingActive())
+            oilTempValue -= isFilterClogged()? flowrate / 20: flowrate/50;
+        OilTemp.Content = $"Oil Temperature: {oilTempValue:F0}C";
+        OilTempBar.Value = oilTempValue;
         if(oilTempValue<10) {TripTurbine("Low oil temperature");
             oilTempValue = 15;
-            oilCoolPump.IsChecked = false;
+            OilCoolPump.IsChecked = false;
         }
         if(oilTempValue>70) {TripTurbine("High oil temperature");
                 oilTempValue = 65;
-                oilCoolPump.IsChecked = true;
+                OilCoolPump.IsChecked = true;
         }
         
     }
     private void GeneratorTick()
     {
-        if(genPreheat.IsChecked == true&& StatorTemp<120)
+        if(GenPreheat.IsChecked == true&& statorTemp<120)
         {
-            StatorTemp += 0.4*Random.Shared.NextDouble();
-            genTemp.Content = $"Stator Temperature: {StatorTemp:F1}C";
-            genTempBar.Value = StatorTemp;
+            statorTemp += 0.4*Random.Shared.NextDouble();
+            GenTemp.Content = $"Stator Temperature: {statorTemp:F1}C";
+            GenTempBar.Value = statorTemp;
         }
-        else if(genCoolant.IsChecked == true && StatorTemp>15&&isCoolingActive())
+        else if(GenCoolant.IsChecked == true && statorTemp>15&&isCoolingActive())
         {
-            StatorTemp -= 0.4*Random.Shared.NextDouble();
-            genTemp.Content = $"Stator Temperature: {StatorTemp:F1}C";
-            genTempBar.Value = StatorTemp;
+            statorTemp -= 0.4*Random.Shared.NextDouble();
+            GenTemp.Content = $"Stator Temperature: {statorTemp:F1}C";
+            GenTempBar.Value = statorTemp;
         }
     }
     private void TurbineTick()
@@ -53,13 +53,13 @@ public partial class MainView
             {
                 TripTurbine("Turbine vibration high");
             }
-            if (Miv && !brake.IsChecked == true)
+            if (miv && !Brake.IsChecked == true)
             {
-                rpm = Turbine.GetTurbineSpeed(rpm, WicketPosition);
+                rpm = Turbine.GetTurbineSpeed(rpm, wicketPosition);
                 RpmLabel.Content = $"Turbine Speed: {rpm:F1} rpm";
                 RpmBar.Value = rpm;
             }
-            else if (brake.IsChecked == true)
+            else if (Brake.IsChecked == true)
             {
                 rpm -= 0.5;
                 if (rpm < 0) rpm = 0;
@@ -72,31 +72,31 @@ public partial class MainView
         }
         else
         {
-            Production=Turbine.GetTurbineOutput(WicketPosition);
-            prodLabel.Content = $"Power Output: {Production:F2} MW";
+            production=Turbine.GetTurbineOutput(wicketPosition);
+            prodLabel.Content = $"Power Output: {production:F2} MW";
         }
     }
     int lubFailTicks = 0;
     private void LubricationTick()
     {
-        if (lubPump.IsChecked == true)
+        if (LubPump.IsChecked == true)
         {
-            if (preheater.IsChecked == true)
+            if (Preheater.IsChecked == true)
             {
                 lubTemperature += 0.1;
             }
 
             if (lubTemperature > 38)
             {
-                Lubrication = true;
+                lubrication = true;
                 lubTemperature += 0.05;
             }
-            else Lubrication = false;
+            else lubrication = false;
 
             if (lubTemperature > 48)
             {
-                fan.IsChecked = true;
-                lubPump.IsChecked = false;
+                Fan.IsChecked = true;
+                LubPump.IsChecked = false;
                 var box = MessageBoxManager
                     .GetMessageBoxStandard("Error!", "Lubrication pump tripped! Overheat!", ButtonEnum.Ok);
                 box.ShowAsPopupAsync(this);
@@ -105,18 +105,18 @@ public partial class MainView
         }
         else
         {
-            Lubrication = false;
+            lubrication = false;
         }
-        if(fan.IsChecked==true)
+        if(Fan.IsChecked==true)
         {
             lubTemperature -= 0.1;
             if (lubTemperature < 20)
             {
-                fan.IsChecked = false;
+                Fan.IsChecked = false;
             }
         }
 
-        if (!Lubrication&&rpm>20)
+        if (!lubrication&&rpm>20)
         {
             lubFailTicks++;
             if (lubFailTicks > 20)
@@ -130,24 +130,24 @@ public partial class MainView
             lubFailTicks = 0;
         }
         LubTemperature.Content = $"Temperature: {lubTemperature:F1}C";
-        lubTempBar.Value = lubTemperature;
+        LubTempBar.Value = lubTemperature;
     }
 
     private async void ChangeFilterA_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (filterA.IsChecked == true) filterOff.IsChecked = true;
-        filterA.IsEnabled = false;
+        if (FilterA.IsChecked == true) FilterOff.IsChecked = true;
+        FilterA.IsEnabled = false;
         await Task.Delay(30000);
         filterAClog = false;
-        filterA.IsEnabled = true;
+        FilterA.IsEnabled = true;
     }
 
     private async void ChangeFilterB_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (filterB.IsChecked == true) filterOff.IsChecked = true;
-        filterB.IsEnabled = false;
+        if (FilterB.IsChecked == true) FilterOff.IsChecked = true;
+        FilterB.IsEnabled = false;
         await Task.Delay(30000);
         filterBClog = false;
-        filterB.IsEnabled = true;
+        FilterB.IsEnabled = true;
     }
 }

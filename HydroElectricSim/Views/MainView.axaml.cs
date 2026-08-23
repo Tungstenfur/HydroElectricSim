@@ -15,22 +15,22 @@ public partial class MainView : UserControl
 {
     DispatcherTimer _timer;
     DispatcherTimer _demandTimer;
-    double Flowrate=0.2;
-    double StatorTemp=30;
-    double WicketPosition=0;
-    double Demand=0;
-    double Production=0;
+    double flowrate=0.2;
+    double statorTemp=30;
+    double wicketPosition=0;
+    double demand=0;
+    double production=0;
     double rpm=0;
     double lubTemperature=20;
     double oilTempValue=15;
-    bool TurbineFilling = false;
-    bool Miv=false;
-    bool ElecOilPump=false;
-    bool MainOilPump=false;
+    bool turbineFilling = false;
+    bool miv=false;
+    bool elecOilPump=false;
+    bool mainOilPump=false;
     bool syncState = false;
     bool filterAClog=false;
     bool filterBClog=false;
-    bool Lubrication=false;
+    bool lubrication=false;
     public MainView()
     {
         InitializeComponent();
@@ -47,8 +47,8 @@ public partial class MainView : UserControl
 
     private void DemandTimerOnTick(object? sender, EventArgs e)
     {
-        Demand=Random.Shared.NextDouble() * (15 - 1) + 1;
-        demandLabel.Content=$"Demand: {Demand:F2} MW";
+        demand=Random.Shared.NextDouble() * (15 - 1) + 1;
+        demandLabel.Content=$"Demand: {demand:F2} MW";
     }
 
     private void Timer_Tick(object? sender, EventArgs e)
@@ -64,42 +64,42 @@ public partial class MainView : UserControl
 
     private bool isFilterClogged()
     {
-        if(filterA.IsChecked==true&&filterAClog) return true;
-        if(filterB.IsChecked==true&&filterBClog) return true;
-        if (filterOff.IsChecked == true) return true;
+        if(FilterA.IsChecked==true&&filterAClog) return true;
+        if(FilterA.IsChecked==true&&filterBClog) return true;
+        if (FilterA.IsChecked == true) return true;
         return false;
     }
     private void Flowrate_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
-        Flowrate = Math.Round(e.NewValue, 2);
-        flowrateLabel.Content = $"Flowrate: {Flowrate} m³/s";
+        flowrate = Math.Round(e.NewValue, 2);
+        FlowrateLabel.Content = $"Flowrate: {flowrate} m³/s";
     }
     private void GenPreheat_Checked(object? sender, RoutedEventArgs e)
     {
-        genCoolant.IsChecked = false;
+        GenCoolant.IsChecked = false;
     }
     private void GenCoolant_Checked(object? sender, RoutedEventArgs e)
     {
-        genPreheat.IsChecked = false;
+        GenPreheat.IsChecked = false;
     }
 
     private async void TurbineFill_Click(object? sender, RoutedEventArgs e)
     {
         bool isRunning = await isOilPumpRunning();
         if (!isRunning)return;
-        TurbineFilling=true;
+        turbineFilling=true;
         TurbineFill.IsEnabled=false;
         await Task.Delay(5000);
-        MIVopen.IsEnabled=true;
-        TurbineFilling=false;
+        MivOpen.IsEnabled=true;
+        turbineFilling=false;
     }
     private async void MIVopen_Click(object? sender, RoutedEventArgs e)
     {
         bool isRunning = await isOilPumpRunning();
         if (!isRunning)return;
-        MIVopen.Content = "MIV Opened";
-        MIVopen.IsEnabled=false;
-        Miv=true;
+        MivOpen.Content = "MIV Opened";
+        MivOpen.IsEnabled=false;
+        miv=true;
     }
 
     
@@ -107,78 +107,76 @@ public partial class MainView : UserControl
 
     private async Task<bool> isOilPumpRunning()
     {
-        if(elecPump.IsChecked==true || MainOilPump)
+        if(ElecPump.IsChecked==true || mainOilPump)
         {
             return true;
         }
-        else
-        {
-            var box = MessageBoxManager
-                .GetMessageBoxStandard("Error!", "Unable to open valve! Is the oil pump running?", ButtonEnum.Ok);
-            await box.ShowAsPopupAsync(this);
-            return false;
-        }
+
+        var box = MessageBoxManager
+            .GetMessageBoxStandard("Error!", "Unable to open valve! Is the oil pump running?");
+        await box.ShowAsPopupAsync(this);
+        return false;
     }
     private bool isCoolingActive()
     {
-        return coolantValve.IsChecked==true&&loop1.IsChecked==true&&loop2.IsChecked==true;
+        return CoolantValve.IsChecked==true&&Loop1.IsChecked==true&&Loop2.IsChecked==true;
     }
     private void checkSyncStatus()
     {
-        sync.IsEnabled=false;
+        Sync.IsEnabled=false;
         if (rpm < 245)
         {
-            syncStatus.Content="Cant sync: too slow!";
+            SyncStatus.Content="Cant sync: too slow!";
             return;
         }
         if(rpm>255)
         {
-            syncStatus.Content="Cant sync: too fast!";
+            SyncStatus.Content="Cant sync: too fast!";
             return;
         }
         if(Turbine.GetSpeedStdDev()>0.5)
         {
-            syncStatus.Content="Cant sync: unstable speed!"+$" (StdDev: {Turbine.GetSpeedStdDev():F2}>0.5)";
+            SyncStatus.Content="Cant sync: unstable speed!"+$" (StdDev: {Turbine.GetSpeedStdDev():F2}>0.5)";
             return;
         }
-        syncStatus.Content="Ready to sync!";
-        sync.IsEnabled=true;
+        SyncStatus.Content="Ready to sync!";
+        Sync.IsEnabled=true;
         
         
     }
 
     private void wicketOpenFine_Click(object? sender, RoutedEventArgs e)
     {
-        if(WicketPosition+0.1>=100)
-            WicketPosition=100;
+        if(wicketPosition+0.1>=100)
+            wicketPosition=100;
         else
-            WicketPosition+=0.1;
+            wicketPosition+=0.1;
         UpdateWicketPosition();
     }
 
     private void wicketCloseFine_Click(object? sender, RoutedEventArgs e)
     {
-        if (WicketPosition - 0.1 <= 0)
-            WicketPosition = 0;
+        if (wicketPosition - 0.1 <= 0)
+            wicketPosition = 0;
         else
-            WicketPosition -= 0.1;
+            wicketPosition -= 0.1;
         UpdateWicketPosition();
     }
     private void UpdateWicketPosition()
     {
-        wicketPositionLabel.Content = $"Wicket gates: {WicketPosition:F1}%";
-        wicketGates.Value = WicketPosition;
+        WicketPositionLabel.Content = $"Wicket gates: {wicketPosition:F1}%";
+        WicketGates.Value = wicketPosition;
     }
 
     private void WicketGates_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
-        WicketPosition = e.NewValue;
+        wicketPosition = e.NewValue;
         UpdateWicketPosition();
     }
 
     private void Sync_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
     {
-        syncState = sync.IsChecked==true;
+        syncState = Sync.IsChecked==true;
         if (syncState)
         {
             rpm = 250;
@@ -188,13 +186,13 @@ public partial class MainView : UserControl
     private void TripTurbine(string reason)
     {
         syncState=false;
-        sync.IsChecked=false;
-        brake.IsChecked=true;
-        WicketPosition=0;
-        wicketGates.Value=0;
-        wicketPositionLabel.Content = $"Wicket gates: {WicketPosition:F1}%";
+        Sync.IsChecked=false;
+        Brake.IsChecked=true;
+        wicketPosition=0;
+        WicketGates.Value=0;
+        WicketPositionLabel.Content = $"Wicket gates: {wicketPosition:F1}%";
         rpm=0;
-        syncStatus.Content="Cant sync: too slow!";
+        SyncStatus.Content="Cant sync: too slow!";
         var box = MessageBoxManager
             .GetMessageBoxStandard("Trip!", $"Turbine tripped: {reason}", ButtonEnum.Ok);
         box.ShowAsPopupAsync(this);

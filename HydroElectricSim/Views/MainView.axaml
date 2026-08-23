@@ -41,13 +41,13 @@
                         <Grid>
                             <StackPanel Margin="10">
                                 <Label>Coolant Panel</Label>
-                                <CheckBox Name="coolantValve">Coolant valve</CheckBox>
-                                <CheckBox Name="loop1">Loop 1 valve</CheckBox>
-                                <CheckBox Name="loop2">Loop 2 valve</CheckBox>
+                                <CheckBox Name="CoolantValve">Coolant valve</CheckBox>
+                                <CheckBox Name="Loop1">Loop 1 valve</CheckBox>
+                                <CheckBox Name="Loop2">Loop 2 valve</CheckBox>
                                 <Label>Filter select</Label>
-                                <RadioButton GroupName="FilterGroup" Name="filterA" IsChecked="True">Filter A</RadioButton>
-                                <RadioButton GroupName="FilterGroup" Name="filterB">Filter B</RadioButton>
-                                <RadioButton GroupName="FilterGroup" Name="filterOff">Bypass</RadioButton>
+                                <RadioButton GroupName="FilterGroup" Name="FilterA" IsChecked="True">Filter A</RadioButton>
+                                <RadioButton GroupName="FilterGroup" Name="FilterB">Filter B</RadioButton>
+                                <RadioButton GroupName="FilterGroup" Name="FilterOff">Bypass</RadioButton>
                                 <CheckBox IsChecked="True">Oil separator</CheckBox>
                                 <Button Name="CoolantTrip" Background="Red" Foreground="Yellow" HorizontalAlignment="Stretch" Click="CoolantTrip_OnClick">TRIP</Button>
                             </StackPanel>
@@ -57,10 +57,10 @@
                         <Grid>
                             <StackPanel Margin="10">
                                 <Label>Generator Panel</Label>
-                                <CheckBox Name="genPreheat" Click="GenPreheat_Checked">Generator preheat</CheckBox>
-                                <CheckBox Name="genCoolant" Click="GenCoolant_Checked">Gen coolant</CheckBox>
-                                <Label Name="genTemp">Stator Temperature: 30C</Label>
-                                <ProgressBar Value="30" Maximum="120" Name="genTempBar"></ProgressBar>
+                                <CheckBox Name="GenPreheat" Click="GenPreheat_Checked">Generator preheat</CheckBox>
+                                <CheckBox Name="GenCoolant" Click="GenCoolant_Checked">Gen coolant</CheckBox>
+                                <Label Name="GenTemp">Stator Temperature: 30C</Label>
+                                <ProgressBar Value="30" Maximum="120" Name="GenTempBar"></ProgressBar>
                             </StackPanel>
                         </Grid>
                     </Border>
@@ -68,13 +68,13 @@
                         <Grid>
                             <StackPanel Margin="10">
                                 <Label>Hydraulic Panel</Label>
-                                <CheckBox Name="elecPump">Electric oil pump</CheckBox>
-                                <CheckBox Name="filterBypass">Filter bypass</CheckBox>
-                                <Label Name="oilTemp">Oil Temperature: 15C</Label>
-                                <ProgressBar Value="15" Maximum="100" Name="oilTempBar"></ProgressBar>
-                                <CheckBox Name="oilCoolPump">Oil coolant pump</CheckBox>
-                                <Label Name="flowrateLabel">Flowrate: 0.2m³/s</Label>
-                                <Slider Minimum="0.2" Maximum="2" Value="0.2" Name="flowrate" ValueChanged="Flowrate_OnValueChanged"></Slider>
+                                <CheckBox Name="ElecPump">Electric oil pump</CheckBox>
+                                <CheckBox Name="FilterBypass">Filter bypass</CheckBox>
+                                <Label Name="OilTemp">Oil Temperature: 15C</Label>
+                                <ProgressBar Value="15" Maximum="100" Name="OilTempBar"></ProgressBar>
+                                <CheckBox Name="OilCoolPump">Oil coolant pump</CheckBox>
+                                <Label Name="FlowrateLabel">Flowrate: 0.2m³/s</Label>
+                                <Slider Minimum="0.2" Maximum="2" Value="0.2" Name="Flowrate" ValueChanged="Flowrate_OnValueChanged"></Slider>
                             </StackPanel>
                         </Grid>
                     </Border>
@@ -82,18 +82,18 @@
                         <Grid>
                             <StackPanel Margin="10">
                                 <Label>Turbine Panel</Label>
-                                <CheckBox Name="sync" IsEnabled="False" IsCheckedChanged="Sync_OnIsCheckedChanged">Sync to grid</CheckBox>
-                                <Label Name="syncStatus">Cant sync: too slow!</Label>
-                                <CheckBox Name="brake" IsChecked="True">Turbine brake</CheckBox>
+                                <CheckBox Name="Sync" IsEnabled="False" IsCheckedChanged="Sync_OnIsCheckedChanged">Sync to grid</CheckBox>
+                                <Label Name="SyncStatus">Cant sync: too slow!</Label>
+                                <CheckBox Name="Brake" IsChecked="True">Turbine brake</CheckBox>
                                 <Label Name="RpmLabel">Turbine Speed: 0 rpm</Label>
                                 <ProgressBar Maximum="300" Name="RpmBar"></ProgressBar>
-                                <Label Name="wicketPositionLabel">Wicket gates: 0%</Label>
-                                <Slider Minimum="0" Maximum="100" Value="0" Name="wicketGates" ValueChanged="WicketGates_OnValueChanged"></Slider>
-                                <Button Name="wicketOpenFine" HorizontalAlignment="Stretch" Click="wicketOpenFine_Click">OPEN WICKET FINE</Button>
-                                <Button Name="wicketCloseFine" HorizontalAlignment="Stretch" Click="wicketCloseFine_Click">CLOSE WICKET FINE</Button>
+                                <Label Name="WicketPositionLabel">Wicket gates: 0%</Label>
+                                <Slider Minimum="0" Maximum="100" Value="0" Name="WicketGates" ValueChanged="WicketGates_OnValueChanged"></Slider>
+                                <Button Name="WicketOpenFine" HorizontalAlignment="Stretch" Click="wicketOpenFine_Click">OPEN WICKET FINE</Button>
+                                <Button Name="WicketCloseFine" HorizontalAlignment="Stretch" Click="wicketCloseFine_Click">CLOSE WICKET FINE</Button>
                                 <Separator Height="1" Margin="0,10,0,10"></Separator>
                                 <Button Name="TurbineFill" HorizontalAlignment="Stretch" Click="TurbineFill_Click">FILL TURBINE</Button>
-                                <Button Name="MIVopen" HorizontalAlignment="Stretch" IsEnabled="False" Click="MIVopen_Click">OPEN MIV</Button>
+                                <Button Name="MivOpen" HorizontalAlignment="Stretch" IsEnabled="False" Click="MIVopen_Click">OPEN MIV</Button>
                                 <Separator Height="1" Margin="0,10,0,10"></Separator>
                                 <Button Name="TurbineTrip" Background="Red" Foreground="Yellow" HorizontalAlignment="Stretch" Click="TurbineTrip_OnClick">TRIP</Button>
                             </StackPanel>
@@ -103,12 +103,12 @@
                         <Grid>
                             <StackPanel Margin="10">
                                 <Label>Lubrication</Label>
-                                <CheckBox Name="lubPump" Content="Lubrication Pump"></CheckBox>
-                                <CheckBox Name="preheater" Content="Preheater"></CheckBox>
-                                <CheckBox Name="fan" Content="Fan"></CheckBox>
-                                <Label Name="pumpStatus">Pump not running!</Label>
+                                <CheckBox Name="LubPump" Content="Lubrication Pump"></CheckBox>
+                                <CheckBox Name="Preheater" Content="Preheater"></CheckBox>
+                                <CheckBox Name="Fan" Content="Fan"></CheckBox>
+                                <Label Name="PumpStatus">Pump not running!</Label>
                                 <Label Name="LubTemperature">Temperature: 20C</Label>
-                                <ProgressBar Value="20" Maximum="50" Name="lubTempBar"></ProgressBar>
+                                <ProgressBar Value="20" Maximum="50" Name="LubTempBar"></ProgressBar>
                             </StackPanel>
                         </Grid>
                     </Border>
@@ -116,8 +116,10 @@
                         <Grid>
                             <StackPanel Margin="10">
                                 <Label>Others</Label>
-                                <Button Name="changeFilterA" Click="ChangeFilterA_OnClick">Change filter A</Button>
-                                <Button Name="changeFilterB" Click="ChangeFilterB_OnClick">Change filter B</Button>
+                                <Button Name="ChangeFilterA" Click="ChangeFilterA_OnClick" HorizontalAlignment="Stretch">Change filter A</Button>
+                                <Button Name="ChangeFilterB" Click="ChangeFilterB_OnClick" HorizontalAlignment="Stretch">Change filter B</Button>
+                                <Separator Margin="10"></Separator>
+                                <Label>Trash rack pressure:</Label>
                             </StackPanel>
                         </Grid>
                     </Border>
