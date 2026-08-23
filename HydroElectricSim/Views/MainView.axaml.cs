@@ -212,18 +212,22 @@ public partial class MainView : UserControl
     private async void ChangeFilterA_OnClick(object? sender, RoutedEventArgs e)
     {
         if (FilterA.IsChecked == true) FilterOff.IsChecked = true;
+        ChangeFilterA.IsEnabled=false;
         FilterA.IsEnabled = false;
         await Task.Delay(30000);
         filterAClog = false;
         FilterA.IsEnabled = true;
+        ChangeFilterA.IsEnabled = true;
     }
 
     private async void ChangeFilterB_OnClick(object? sender, RoutedEventArgs e)
     {
+        ChangeFilterB.IsEnabled=false;
         if (FilterB.IsChecked == true) FilterOff.IsChecked = true;
         FilterB.IsEnabled = false;
         await Task.Delay(30000);
         filterBClog = false;
         FilterB.IsEnabled = true;
+        ChangeFilterB.IsEnabled = true;
     }
 }
