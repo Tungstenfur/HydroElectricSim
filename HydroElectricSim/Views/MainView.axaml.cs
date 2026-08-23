@@ -11,35 +11,34 @@ namespace HydroElectricSim.Views;
 
 public partial class MainView : UserControl
 {
-    DispatcherTimer _timer;
-    DispatcherTimer _demandTimer;
-    double flowrate=0.2;
-    double statorTemp=30;
-    double wicketPosition=0;
-    double demand=0;
-    double production=0;
-    double rpm=0;
-    double lubTemperature=20;
-    double oilTempValue=15;
-    bool turbineFilling = false;
-    bool miv=false;
-    bool elecOilPump=false;
-    bool mainOilPump=false;
-    bool syncState = false;
-    bool filterAClog=false;
-    bool filterBClog=false;
-    bool lubrication=false;
+    private DispatcherTimer timer;
+    private DispatcherTimer demandTimer;
+    private double flowrate=0.2;
+    private double statorTemp=30;
+    private double wicketPosition=0;
+    private double demand=0;
+    private double production=0;
+    private double rpm=0;
+    private double lubTemperature=20;
+    private double oilTempValue=15;
+    private double trashRackFill=0;
+    private bool turbineFilling = false;
+    private bool miv=false;
+    private bool syncState = false;
+    private bool filterAClog=false;
+    private bool filterBClog=false;
+    private bool lubrication=false;
     public MainView()
     {
         InitializeComponent();
-        _timer = new();
-        _timer.Interval = TimeSpan.FromMilliseconds(200);
-        _timer.Tick+= Timer_Tick;
-        _timer.Start();
-        _demandTimer=new();
-        _demandTimer.Interval=TimeSpan.FromSeconds(45);
-        _demandTimer.Tick+= DemandTimerOnTick;
-        _demandTimer.Start();
+        timer = new();
+        timer.Interval = TimeSpan.FromMilliseconds(200);
+        timer.Tick+= Timer_Tick;
+        timer.Start();
+        demandTimer=new();
+        demandTimer.Interval=TimeSpan.FromSeconds(45);
+        demandTimer.Tick+= DemandTimerOnTick;
+        demandTimer.Start();
         DemandTimerOnTick(null, null);
     }
 
@@ -55,6 +54,7 @@ public partial class MainView : UserControl
         TurbineTick();
         HydraulicTick();
         LubricationTick();
+        TrashTick();
         infoUpdate();
         if(Random.Shared.NextDouble() < 0.001) filterAClog=true;
         if(Random.Shared.NextDouble() < 0.001) filterBClog=true;
@@ -105,7 +105,7 @@ public partial class MainView : UserControl
 
     private async Task<bool> isOilPumpRunning()
     {
-        if(ElecPump.IsChecked==true || mainOilPump)
+        if(ElecPump.IsChecked==true || rpm>100)
         {
             return true;
         }
@@ -199,5 +199,31 @@ public partial class MainView : UserControl
     private void TurbineTrip_OnClick(object? sender, RoutedEventArgs e)
     {
         TripTurbine("Manual trip initiated.");
+    }
+    private async void TrashRackClean_OnClick(object? sender, RoutedEventArgs e)
+    {
+        while (trashRackFill>1)
+        {
+            trashRackFill-=2;
+            TrashRackPressureBar.Value=trashRackFill;
+            await Task.Delay(100);
+        }
+    }
+    private async void ChangeFilterA_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (FilterA.IsChecked == true) FilterOff.IsChecked = true;
+        FilterA.IsEnabled = false;
+        await Task.Delay(30000);
+        filterAClog = false;
+        FilterA.IsEnabled = true;
+    }
+
+    private async void ChangeFilterB_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (FilterB.IsChecked == true) FilterOff.IsChecked = true;
+        FilterB.IsEnabled = false;
+        await Task.Delay(30000);
+        filterBClog = false;
+        FilterB.IsEnabled = true;
     }
 }

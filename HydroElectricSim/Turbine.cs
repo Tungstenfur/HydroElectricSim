@@ -12,9 +12,9 @@ internal static class Turbine
         //https://www.desmos.com/calculator/4v6lmt0y3w
         return speed+(30*wicketPosition/(speed+2));
     }
-    internal static double GetTurbineOutput(double wicketPosition)
+    internal static double GetTurbineOutput(double wicketPosition, double trashRackFill)
     {
-        return Math.Max(wicketPosition*0.2-(10*0.15),0);
+        return Math.Max((wicketPosition*0.2-(10*0.15)*GetTrashRackPenalty(trashRackFill)),0);
     }
     internal static void UpdateSpeedHistory(double speed)
     {
@@ -37,5 +37,9 @@ internal static class Turbine
             variance += (speed - mean) * (speed - mean);
         variance/=speedHistory.Count;
         return Math.Sqrt(variance);
+    }
+    internal static double GetTrashRackPenalty(double trashRackFill)
+    {
+        return Math.Min((-0.015*trashRackFill)+2,1);
     }
 }

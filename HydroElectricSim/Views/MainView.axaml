@@ -120,6 +120,8 @@
                                 <Button Name="ChangeFilterB" Click="ChangeFilterB_OnClick" HorizontalAlignment="Stretch">Change filter B</Button>
                                 <Separator Margin="10"></Separator>
                                 <Label>Trash rack pressure:</Label>
+                                <ProgressBar Name="TrashRackPressureBar"></ProgressBar>
+                                <Button Margin="0,5,0,0" Name="TrashRackClean" HorizontalAlignment="Stretch" Click="TrashRackClean_OnClick">Empty trash rack</Button>
                             </StackPanel>
                         </Grid>
                     </Border>

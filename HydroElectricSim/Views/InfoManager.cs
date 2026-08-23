@@ -57,4 +57,5 @@ public partial class MainView
         Loop1.IsChecked = false;
         Loop2.IsChecked = false;
     }
+    
 }

@@ -71,11 +71,13 @@ public partial class MainView
         }
         else
         {
-            production=Turbine.GetTurbineOutput(wicketPosition);
+            if(GenTempBar.Value<50) TripTurbine("Generator Short circuit");
+            if(GenTempBar.Value>90) TripTurbine("Generator Overheat");
+            production=Turbine.GetTurbineOutput(wicketPosition,trashRackFill);
             prodLabel.Content = $"Power Output: {production:F2} MW";
         }
     }
-    int lubFailTicks = 0;
+    private int lubFailTicks = 0;
     private void LubricationTick()
     {
         if (LubPump.IsChecked == true)
@@ -118,7 +120,7 @@ public partial class MainView
         if (!lubrication&&rpm>20)
         {
             lubFailTicks++;
-            if (lubFailTicks > 20)
+            if (lubFailTicks > 100)
             {
                 TripTurbine("Lubrication failure");
                 lubFailTicks = 0;
@@ -131,22 +133,15 @@ public partial class MainView
         LubTemperature.Content = $"Temperature: {lubTemperature:F1}C";
         LubTempBar.Value = lubTemperature;
     }
-
-    private async void ChangeFilterA_OnClick(object? sender, RoutedEventArgs e)
+    private void TrashTick()
     {
-        if (FilterA.IsChecked == true) FilterOff.IsChecked = true;
-        FilterA.IsEnabled = false;
-        await Task.Delay(30000);
-        filterAClog = false;
-        FilterA.IsEnabled = true;
+        if (trashRackFill<100&&miv)
+        {
+            trashRackFill+=0.4;
+            TrashRackPressureBar.Value = trashRackFill;
+        }
     }
 
-    private async void ChangeFilterB_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if (FilterB.IsChecked == true) FilterOff.IsChecked = true;
-        FilterB.IsEnabled = false;
-        await Task.Delay(30000);
-        filterBClog = false;
-        FilterB.IsEnabled = true;
-    }
+
+    
 }
