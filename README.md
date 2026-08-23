@@ -10,6 +10,7 @@ cd HydroElectricSim.Desktop
 dotnet run -c Release
 ```
 ### Web
+Available at <https://tungstenfur.github.io/HydroElectricSim/>
 ```bash
 cd HydroElectricSim.Web
 dotnet publish -o out -c Release
