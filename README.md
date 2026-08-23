@@ -5,6 +5,7 @@ Its a simulator, it simulates somewhat realistically how a hydroelectric power p
 ## How to install/run it
 Make sure dotnet 10 sdk is installed
 ### Desktop (Windows and linux)
+[Showcase](https://drive.google.com/file/d/1fTrMrHWvrBwGoCgNywhFtYUDZ4UKEZwO/view?usp=sharing)
 ```bash
 cd HydroElectricSim.Desktop
 dotnet run -c Release
